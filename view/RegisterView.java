@@ -101,32 +101,27 @@ public class RegisterView {
             mainFrame.dispose();
         });
 
-        
-        registerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String name = nameField.getText().trim();
-                //int telp = telpField.get
-                String alamat = alamatField.getText().trim();
-                String password = new String(passwordField.getPassword()).trim();
-
-                if (name.isEmpty() || telp.isEmpty() || alamat.isEmpty()|| password.isEmpty()) {
-                    JOptionPane.showMessageDialog(mainFrame, "Semua field wajib diisi!", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                RegisterController controller = new RegisterController();
-                boolean isRegistered = controller.registerUser(name, telp,alamat, password);
-
-                if (isRegistered) {
-                    JOptionPane.showMessageDialog(mainFrame, "Registrasi berhasil! Silakan login.", "Sukses", JOptionPane.INFORMATION_MESSAGE);
-                    mainFrame.dispose(); 
-                    new LoginView(); 
-                }
+        registerButton.addActionListener(e->{
+            String name = nameField.getText().trim();
+            //int telp = telpField.get
+            String alamat = alamatField.getText().trim();
+            String password = new String(passwordField.getPassword()).trim();
+    
+            if (name.isEmpty() || telp.isEmpty() || alamat.isEmpty()|| password.isEmpty()) {
+                JOptionPane.showMessageDialog(mainFrame, "Semua field wajib diisi!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-        });
+    
+            RegisterController controller = new RegisterController();
+            boolean isRegistered = controller.registerUser(name, telp,alamat, password);
+    
+            if (isRegistered) {
+                JOptionPane.showMessageDialog(mainFrame, "Registrasi berhasil! Silakan login.", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+                mainFrame.dispose(); 
+                new LoginView(); 
+            }
 
-       
+        });
         
         mainFrame.add(panel);
         mainFrame.setVisible(true);
