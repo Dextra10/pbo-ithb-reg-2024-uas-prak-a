@@ -6,50 +6,34 @@ import java.util.TimeZone;
 import javax.swing.JOptionPane;
 
 public class DatabaseConnection {
-
     public Connection con;
-    private String driver = "com.mysql.cj.jdbc.Driver";    
-    private String url = "jdbc:mysql://localhost/DB_UAS_1122049?serverTimezone=" + TimeZone.getDefault().getID();
+    
+    //private String driver = "com.mysql.cj.jdbc.Driver";    
+    private String url = "jdbc:mysql://localhost/db_uas_1122049";
     private String username = "root";
     private String password = "";
 
-    private Connection logOn() {
+    public Connection getConnection() {
         try {
-            // Load JDBC Driver
-            Class.forName(driver).newInstance();
-            // Buat Object Connection
-            con = DriverManager.getConnection(url, username, password);
-        } catch (Exception ex) {
-            // handle any errors
-            System.out.println("SQLException: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getLocalizedMessage());
-            JOptionPane.showMessageDialog(null, "Error Ocurred when login" + ex);
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(url, username, password);
+            System.out.println("Koneksi ke database berhasil!");
+            return conn;
+        } catch (ClassNotFoundException e) {
+            System.err.println("Database Driver tidak ditemukan!");
+            e.printStackTrace();
+        } catch (SQLException e) {
+            System.err.println("Koneksi ke database gagal!");
+            e.printStackTrace();
         }
-        return con;
-    }
-
-    private void logOff() {
-        try {
-            //tutup koneksi
-            con.close();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Error Ocurred when login" + ex);
-        }
+        return null;
     }
 
     public void connect() {
         try {
-            con = logOn();
-        } catch (Exception ex) {
-            System.out.println("Error occured when connecting to database");
-        }
-    }
-
-    public void disconnect() {
-        try {
-            logOff();
-        } catch (Exception ex) {
-            System.out.println("Error occured when connecting to database");
+            con = DriverManager.getConnection(url, username, password);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

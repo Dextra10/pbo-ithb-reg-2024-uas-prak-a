@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 public class RegisterView {
     public RegisterView(){
         JFrame mainFrame = new JFrame("Register");
-        mainFrame.setSize(500, 300);
+        mainFrame.setSize(500, 500);
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -103,7 +103,7 @@ public class RegisterView {
 
         registerButton.addActionListener(e->{
             String name = nameField.getText().trim();
-            //int telp = telpField.get
+            String telp = telpField.getText().trim();
             String alamat = alamatField.getText().trim();
             String password = new String(passwordField.getPassword()).trim();
     
@@ -113,12 +113,21 @@ public class RegisterView {
             }
     
             RegisterController controller = new RegisterController();
-            boolean isRegistered = controller.registerUser(name, telp,alamat, password);
-    
+
+            // Periksa apakah pengguna sudah ada di database
+            if (controller.isUserExists(name, telp)) {
+                JOptionPane.showMessageDialog(mainFrame, "Nama atau nomor telepon sudah terdaftar!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            boolean isRegistered = controller.registerUser(name, telp, alamat, password);
+
             if (isRegistered) {
                 JOptionPane.showMessageDialog(mainFrame, "Registrasi berhasil! Silakan login.", "Sukses", JOptionPane.INFORMATION_MESSAGE);
                 mainFrame.dispose(); 
                 new LoginView(); 
+            } else {
+                JOptionPane.showMessageDialog(mainFrame, "Registrasi gagal. Coba lagi.", "Error", JOptionPane.ERROR_MESSAGE);
             }
 
         });
